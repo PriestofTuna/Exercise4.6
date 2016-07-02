@@ -13,14 +13,13 @@ public class CircleandT {
         return Math.toRadians(rando);
     }
 
-    public static double[][] getPoints() { //was getPointX
+    public static double[][] getPoints() {
         double dummy[][];
         dummy = new double[3][2];
         boolean noEscape;
         do {
             for (int i = 0; i <= 2; i++) {
                 //cycles through to assign x and y values
-
                 double rando = randomizeRadians(); //calls randomizeRadians and changes the value of radians
                 dummy[i][0] = radius * (Math.cos(rando)); //x value
                 dummy[i][1] = radius * (Math.sin(rando)); //y value
@@ -43,7 +42,7 @@ public class CircleandT {
             cSqred = (check[cycle][0] * check[cycle][0]);
             cpSqred = (check[cycleP][1] * check[cycleP][1]);
             if (cSqred + cpSqred == Math.pow(radius, 2)) {
-                //Formula explanation: if xe2 in cycle + ye2 in cycleP equals the Radius
+                //Formula explanation: if x^2 in cycle + y^2 in cycleP equals the Radius^2
                 //Then the points are redundant.
                 //Thus it returns true, for redundant.
                 return true;
@@ -55,23 +54,43 @@ public class CircleandT {
     }
 
     public static double[] degrees(double[][] evalPoints) {
-        double angle, angle2, angle3;
-        //below is the formula for Triangle angles, used instead of holding the angles, as this is reusable.
-        double distanceL1 = ((Math.pow(evalPoints[1][0], 2)) - (Math.pow(evalPoints[0][0], 2)) /
-                ((Math.pow(evalPoints[0][1], 2)) - (Math.pow(evalPoints[1][1], 2))));
-        double distanceL2 = ((Math.pow(evalPoints[2][0], 2)) - (Math.pow(evalPoints[1][0], 2)) /
-            ((Math.pow(evalPoints[2][1], 2)) - (Math.pow(evalPoints[1][1], 2))));
-        double distanceL3 = ((Math.pow(evalPoints[0][0], 2)) - (Math.pow(evalPoints[2][0], 2)) /
-        ((Math.pow(evalPoints[0][1], 2)) - (Math.pow(evalPoints[2][1], 2))));
+        //continue the statement using
+        //the cos formula
+        double angle, angle2, angle3, side1, side2, side3;
+        //below is the formula for Triangle angles
+        double distanceL1 = Math.sqrt((Math.pow((evalPoints[1][0]) - (evalPoints[0][0]),2)) +
+                (Math.pow((evalPoints[1][1]) - (evalPoints[0][1]),2)));
+        //Creates the angle from the points
+        double distanceL2 = Math.sqrt((Math.pow((evalPoints[2][0]) - (evalPoints[1][0]),2)) +
+                (Math.pow((evalPoints[2][1]) - (evalPoints[1][1]),2)));
+        //Same as above
+        double distanceL3 =   Math.sqrt((Math.pow((evalPoints[0][0]) - (evalPoints[2][0]),2)) +
+                (Math.pow((evalPoints[0][1]) - (evalPoints[2][1]),2)));
 
-        angle2 = Math.tan(distanceL1 / distanceL2);
-        angle3 = Math.tan(distanceL2 / distanceL3);
-        angle = 180 - (Math.abs(angle2) + Math.abs(angle3));
+        side1 = (distanceL1); //a
+        side2 = (distanceL2); //b
+        side3 = (distanceL3); //c (Cosine formula)
+        System.out.println( side1 + "\t" + side2 + "\t" + side3);
         double[] evalDegrees = new double[3];
-        evalDegrees[0] = angle;
-        evalDegrees[1] = angle2;
-        evalDegrees[2] = angle3;
-        return evalDegrees;
+        double[] evalAngles = new double[3];
+        evalDegrees[0] = Math.pow(side1, 2); //a^2
+        evalDegrees[1] = Math.pow(side2, 2); //b^2
+        evalDegrees[2] = Math.pow(side3, 2); //c^2
+
+        //System.out.println(evalDegrees[0] +"\t" +evalDegrees[1] + "\t" + evalDegrees[2]);
+        evalAngles[0] = ((evalDegrees[1] + evalDegrees[2]) - evalDegrees[0]) /  (2 * side2 * side3);
+        evalAngles[1] = ((evalDegrees[0] + evalDegrees[2]) - evalDegrees[1]) / (2 *  side3 * side1);
+        evalAngles[2] = ((evalDegrees[0] + evalDegrees[1]) - evalDegrees[2]) / (2 *  side1 * side2);
+        for(int i = 0; i <=2; i++) {
+            System.out.println(evalAngles[i] + "\t");
+        }
+        evalAngles[0] = Math.toDegrees(Math.acos(evalAngles[0]));
+        evalAngles[1] = Math.toDegrees(Math.acos(evalAngles[1]));
+        evalAngles[2] = Math.toDegrees(Math.acos(evalAngles[2]));
+        System.out.println(evalAngles[0]+ "/< 0  "+evalAngles[1] + " /< 1 "+ evalAngles[2]);
+
+        return evalAngles; //the above initializes evalDegrees, map:
+        // distanceL1-3 >> sides1-3 >> evalDegrees >> evalAngles >>
     }
 
     public static String[] toStringTri() {
