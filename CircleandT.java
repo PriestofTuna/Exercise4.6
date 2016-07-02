@@ -81,7 +81,7 @@ public class CircleandT {
         evalAngles[1] = ((evalDegrees[0] + evalDegrees[2]) - evalDegrees[1]) / (2 *  side3 * side1);
         evalAngles[2] = ((evalDegrees[0] + evalDegrees[1]) - evalDegrees[2]) / (2 *  side1 * side2);
         for(int i = 0; i <= 2; i++) {
-            evalAngles[i] = Math.toDegrees(Math.acos(evalAngles[0]));
+            evalAngles[i] = Math.toDegrees(Math.acos(evalAngles[i]));
         }
         return evalAngles; //the above initializes evalDegrees, map:
         // distanceL1-3 >> sides1-3 >> evalDegrees >> evalAngles >>
@@ -97,9 +97,9 @@ public class CircleandT {
     }
     public static String getCombinedangles(double[] degreesOutput) {
             int first = degreesOutput.length - 1;
-            String conCat = "";
+            String conCat = "The angles are in the order of points: ";
         for (int i = 0; i <= first; i++ ) {
-            conCat += (("The angles are in order of points " + "\t" + degreesOutput[i]));
+            conCat += (("Point :" + (i + 1) + "\t" + degreesOutput[i] + "\t"));
         }
         return conCat;
     }
